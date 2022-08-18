@@ -1,0 +1,3 @@
+# cobbler的安装和api接口调用
+
+在安装cobbler完成之后使用，可以直接使用API接口来对cobbler批量装机的进行操作
