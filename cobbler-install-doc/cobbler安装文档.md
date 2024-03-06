@@ -1,4 +1,4 @@
-[toc]
+[TOC]
 
 # COBBLER安装文档
 
@@ -402,6 +402,16 @@ $ cobbler distro list
 
 #### 11、指定镜像加载的ks文件
 
+##### 1）、新增profile文件
+
+- 镜像文件有一个就行了，后面多用profile来安装不同的系统就好
+
+```
+cobbler profile add --distro=centos7_min-x86_64 --name=centos7 --kickstart=/var/lib/cobbler/kickstarts/centos7.ks
+```
+
+##### 2）、编辑profile文件
+
 ```bash
 cobbler profile edit --name=centos7-x86_64 --kickstart=/var/lib/cobbler/kickstarts/centos7.ks 
 ```
@@ -439,7 +449,7 @@ rootpw  --iscrypted $default_password_crypted  #设置root密码
 clearpart --all --initlabel   #--all删除所有分区，后者将磁盘标签初始化为缺省值设置。
 part /boot --fstype="xfs" --ondisk=sda --size=1024 #boot分区大小
 part swap --fstype="swap" --ondisk=sda --size=1024 #swap分区大小
-part /home --fstype="xfs" --ondisk=sda --size=10899 #根分区大小
+# part /home --fstype="xfs" --ondisk=sda --size=10899 #根分区大小
 part / --fstype="xfs" --ondisk=sda --size=1 --grow
 
 firstboot --disable      #决定是否在系统第一次引导时启动"设置代理”.禁用
@@ -699,6 +709,7 @@ EOFA
 #### 12、重启cobbler再次同步
 
 ```bash
+$ systemctl restart cobblerd
 $ cobbler sync
 task started: 2022-03-21_165705_sync
 task started (id=Sync, time=Mon Mar 21 16:57:05 2022)
@@ -1015,25 +1026,24 @@ yum install koan -y
      $ cobbler list
      distros:
         centos7-x86_64
-     
+
      profiles:
         centos7-x86_64
-     
+
      systems:
         Centos7.9_test
-     
+
      repos:
-     
+
      images:
-     
+
      mgmtclasses:
-     
+
      packages:
-     
+
      files:
      ```
 
-     
 
 #### 5、客户端重装系统
 

@@ -5,12 +5,12 @@
 
 makeDefault(){
     # 默认网卡
-    defaultNetcard='ens33'
+    defaultNetcard='ens34'
     # 默认密码
-    defaultPwd='AImas3.!$159'
+    defaultPwd='123456'
     
     # 默认IP
-    netCardName=$(ip a |grep -E '^[0-9]'|awk -F: 'NR==2{print $2}')
+    netCardName=$(ip a |grep -E '^[0-9]'|awk -F': ' 'NR==2{print $2}')
 
     IP=$(ifconfig ${defaultNetcard} |awk '/broadcast/{print $2}')
     
@@ -36,7 +36,7 @@ set_cobbler_conf(){
             s/pxe_just_once: 0/pxe_just_once: 1/;\
             " /etc/cobbler/settings 
 
-    # debian 系统需要修改这个，别的不用 
+    # debian 系统需要修改这个，别的不用 ，不关会提示，但是不影响
     sed -ie "s/@arches=\"i386\"/#@arches=\"i386\"/;\
             s/@dists=\"sid\"/#@dists=\"sid\"/" /etc/debmirror.conf
 
@@ -87,6 +87,7 @@ cat > /etc/yum.repos.d/centos7.repo<<EOF
 [centos7]
 name=centos7
 baseurl=ftp://{{IP}}/centos7
+#baseurl=ftp://${IP}/centos7
 enable=1
 gpgcheck=0
 EOF
